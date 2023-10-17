@@ -1,0 +1,4 @@
+uvicorn
+gunicorn
+PyPDF2
+nougat
