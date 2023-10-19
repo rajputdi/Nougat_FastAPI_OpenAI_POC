@@ -9,19 +9,6 @@ import requests
 from requests.exceptions import RequestException
 
 
-#
-# Define the custom CSS
-custom_css = """
-    <style>
-        body {
-            background-color: #34B8CB; 
-        }
-    </style>
-"""
-
-# Inject the custom CSS into the HTML
-st.markdown(custom_css, unsafe_allow_html=True)
-
 st.title("Nougat v/s PyPdf, Q/A Model-OpenAI")
 
 pdf_url = st.text_input("Enter PDF URL:")
