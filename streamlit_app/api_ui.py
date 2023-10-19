@@ -11,7 +11,9 @@ from requests.exceptions import RequestException
 
 st.title("Nougat v/s PyPdf, Q/A Model-OpenAI")
 
-st.image("images/img_homescreen.png", caption="Your Caption Here")
+st.image(
+    "images/img_homescreen.png", caption="Looking for answers!", width=300, height=300
+)
 
 
 pdf_url = st.text_input("Enter PDF URL:")
