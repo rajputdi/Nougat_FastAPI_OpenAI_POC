@@ -195,7 +195,7 @@ if st.button("Extract Text"):
         st.error("Please enter a PDF URL")
 
 if st.button("View Metadata"):
-    st.write(metadata=get_metadata(extract_text))
+    st.write(metadata=get_metadata(st.session_state["extracted_text"]))
 
 
 if st.button("Generate Summary"):
