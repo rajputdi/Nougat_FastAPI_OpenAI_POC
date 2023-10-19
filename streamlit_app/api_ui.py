@@ -113,7 +113,7 @@ if st.button("Extract Text"):
                 # st.write(response_data.get("text", "No text extracted"))
                 st.text_area(
                     "Text: ",
-                    value=response_data.get("text", "No text extracted"),
+                    value=response_data.get("text", "No text extracted").strip(),
                     height=400,
                 )
             elif status_code == 400:
