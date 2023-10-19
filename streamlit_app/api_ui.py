@@ -102,6 +102,7 @@ library_choice = st.selectbox(
 nougat_api_address = (
     st.text_input("Enter Nougat API Address:") if library_choice == "nougat" else None
 )
+extracted_text = None
 
 if st.button("Extract Text"):
     if pdf_url:
