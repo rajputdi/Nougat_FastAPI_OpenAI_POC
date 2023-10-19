@@ -129,16 +129,13 @@ if st.button("Extract Text"):
     else:
         st.error("Please enter a PDF URL")
 
-    if st.button("Generate Summary"):
-        if extracted_text == "":
-            st.write("is empty")
-        st.write(extracted_text)
-        if extracted_text:  # Assuming extracted_text holds the text extracted from PDF
-            summary_response_data, summary_status_code = generate_summary(
-                extracted_text
-            )  # Assuming generate_summary is your client function to call the new endpoint
-            if summary_status_code == 200:
-                st.write("Summary:")
-                st.write(summary_response_data.get("summary", "No summary generated"))
-            else:
-                st.error(f"An error occurred: {summary_status_code}")
+if st.button("Generate Summary"):
+    if extracted_text and extracted_text.strip():
+        summary_response_data, summary_status_code = generate_summary(extracted_text)
+        if summary_status_code == 200:
+            st.write("Summary:")
+            st.write(summary_response_data.get("summary", "No summary generated"))
+        else:
+            st.error(f"An error occurred: {summary_status_code}")
+    else:
+        st.error("No text available to generate summary. Please extract text first.")
