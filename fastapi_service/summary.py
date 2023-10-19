@@ -14,7 +14,7 @@ async def get_summary(text):
     # Construct a prompt for summarization
     openai_api_key = os.environ["OPENAI_API_KEY"]
     openai.api_key = openai_api_key
-    prompt = f"Please summarize the following text so that a a teenage can understand what is written:\n\n{text}"
+    prompt = f"Please summarize the following text so that a teenager can understand what is written:\n\n{text}"
 
     # Use the OpenAI API to get the summary
     response = openai.Completion.create(
