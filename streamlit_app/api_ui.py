@@ -147,7 +147,9 @@ from api_client import (
     extract_text,
     generate_summary,
 )  # Ensure this import is correct based on your file structure
+from metadata import get_metadata
 import requests
+
 from requests.exceptions import RequestException
 
 st.title("Nougat v/s PyPdf, Q/A Model-OpenAI")
@@ -191,6 +193,10 @@ if st.button("Extract Text"):
             st.error(f"An error occurred: {str(e)}")
     else:
         st.error("Please enter a PDF URL")
+
+if st.button("View Metadata"):
+    st.write(metadata=get_metadata(extract_text))
+
 
 if st.button("Generate Summary"):
     if (
