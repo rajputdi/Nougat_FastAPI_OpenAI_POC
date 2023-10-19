@@ -17,5 +17,5 @@ def get_metadata(text):
         "Encoding Name": "p50k_base",
         "Number of Tokens": num_tokens,
         "Number of Words": num_words,
-        "Rough Cost of Query ($)": cost,
+        "Cost of Query ($)": cost,
     }
