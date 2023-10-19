@@ -130,6 +130,8 @@ if st.button("Extract Text"):
         st.error("Please enter a PDF URL")
 
     if st.button("Generate Summary"):
+        if extracted_text == "":
+            st.write("is empty")
         st.write(extracted_text)
         if extracted_text:  # Assuming extracted_text holds the text extracted from PDF
             summary_response_data, summary_status_code = generate_summary(
