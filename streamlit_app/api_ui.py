@@ -195,7 +195,7 @@ if st.button("Extract Text"):
         st.error("Please enter a PDF URL")
 
 if st.button("Display Metadata"):
-    if (
+    if pdf_url and (
         st.session_state["extracted_text"]
         and st.session_state["extracted_text"].strip()
     ):
