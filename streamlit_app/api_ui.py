@@ -11,7 +11,14 @@ from requests.exceptions import RequestException
 
 st.title("Nougat v/s PyPdf, Q/A Model-OpenAI")
 
-st.image("images/img_homescreen.png", caption="Looking for answers!")
+# st.image("images/img_homescreen.png", caption="Looking for answers!")
+
+image_url = "https://raw.githubusercontent.com/rajputdi/Nougat_FastAPI_OpenAI_POC/main/images/img_homescreen.png"
+
+st.markdown(
+    f'<p align="center"><img src="{image_url}" alt="looking for answers"></p>',
+    unsafe_allow_html=True,
+)
 
 
 pdf_url = st.text_input("Enter PDF URL:")
