@@ -10,6 +10,7 @@
 
 
 import requests
+from requests.exceptions import RequestException
 
 
 def extract_text(url, library, nougat_api_address=None):
@@ -23,3 +24,15 @@ def extract_text(url, library, nougat_api_address=None):
         )  # Return both data and status code for non-200 responses
     response.raise_for_status()  # This will raise an exception for bad responses (other than 400)
     return response.json(), response.status_code  # Return both data and status code
+
+
+def generate_summary(text):
+    api_url = "https://damg7245-asng2-team4-fd9f8dd6d40f.herokuapp.com/generate_summary"
+    data = {"text": text}
+    try:
+        response = requests.post(api_url, json=data)
+        response.raise_for_status()  # This will raise an exception for bad responses
+        return response.json(), response.status_code
+    except RequestException as e:
+        print(f"An error occurred: {e}")
+        return None, response.status_code if response else None

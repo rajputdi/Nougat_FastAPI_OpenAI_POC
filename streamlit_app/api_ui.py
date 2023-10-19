@@ -88,11 +88,12 @@
 import streamlit as st
 from api_client import (
     extract_text,
+    generate_summary,
 )  # Ensure this import is correct based on your file structure
 import requests
 from requests.exceptions import RequestException
 
-st.title("PDF Text Extraction App")
+st.title("Nougat v/s PyPdf, Q/A Model-OpenAI")
 
 pdf_url = st.text_input("Enter PDF URL:")
 library_choice = st.selectbox(
@@ -109,6 +110,7 @@ if st.button("Extract Text"):
                 pdf_url, library_choice, nougat_api_address
             )  # Assuming extract_text returns both data and status code
             if status_code == 200:
+                extracted_text = response_data.get("text", "No text extracted")
                 st.write("Extracted Text:")
                 # st.write(response_data.get("text", "No text extracted"))
                 st.text_area(
@@ -126,3 +128,15 @@ if st.button("Extract Text"):
             st.error(f"An error occurred: {str(e)}")
     else:
         st.error("Please enter a PDF URL")
+
+
+if st.button("Generate Summary"):
+    if extracted_text:  # Assuming extracted_text holds the text extracted from PDF
+        summary_response_data, summary_status_code = generate_summary(
+            extracted_text
+        )  # Assuming generate_summary is your client function to call the new endpoint
+        if summary_status_code == 200:
+            st.write("Summary:")
+            st.write(summary_response_data.get("summary", "No summary generated"))
+        else:
+            st.error(f"An error occurred: {summary_status_code}")

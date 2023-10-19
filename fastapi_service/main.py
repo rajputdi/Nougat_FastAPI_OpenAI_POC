@@ -108,6 +108,7 @@ from pdf_extractor import (
     extract_text_pypdf,
     extract_text_nougat,
 )  # Import the necessary functions
+from summary import get_summary
 import requests
 from fastapi.middleware.cors import CORSMiddleware
 from urllib.parse import urlparse
@@ -173,3 +174,21 @@ async def extract_text(request: Request):
         )
 
     return {"text": text}
+
+
+# CHG10192023_DR
+@app.post("/generate-summary/")
+async def generate_summary(request: Request):
+    data = await request.json()
+    text = data.get("text")
+
+    if not text:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="No text provided"
+        )
+
+    # Call OpenAI API to generate summary
+    summary = await get_summary(
+        text
+    )  # Assuming get_summary is your function to call OpenAI API
+    return {"summary": summary}
