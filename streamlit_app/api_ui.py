@@ -194,8 +194,16 @@ if st.button("Extract Text"):
     else:
         st.error("Please enter a PDF URL")
 
-if st.button("View Metadata"):
-    st.write(metadata=get_metadata(st.session_state["extracted_text"]))
+if st.button("Display Metadata"):
+    if (
+        st.session_state["extracted_text"]
+        and st.session_state["extracted_text"].strip()
+    ):
+        metadata = get_metadata(st.session_state["extracted_text"])
+        for key, value in metadata.items():
+            st.write(f"{key}: {value}")
+    else:
+        st.error("No text available to generate metadata. Please extract text first.")
 
 
 if st.button("Generate Summary"):
