@@ -113,7 +113,7 @@ if st.button("Extract Text"):
                 extracted_text = response_data.get("text", "No text extracted")
                 st.write("Extracted Text:")
                 # st.write(response_data.get("text", "No text extracted"))
-                st.text_area(
+                extracted_text = st.text_area(
                     "Text: ",
                     value=response_data.get("text", "No text extracted").strip(),
                     height=400,
