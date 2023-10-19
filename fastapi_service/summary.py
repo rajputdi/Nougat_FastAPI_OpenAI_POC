@@ -1,4 +1,5 @@
 import openai  # Assuming you are using the openai library
+import os
 
 
 async def get_summary(text):
@@ -11,6 +12,8 @@ async def get_summary(text):
     # return summary
 
     # Construct a prompt for summarization
+    openai_api_key = os.environ["OPENAI_API_KEY"]
+    openai.api_key = openai_api_key
     prompt = f"Please summarize the following text so that a a teenage can understand what is written:\n\n{text}"
 
     # Use the OpenAI API to get the summary
