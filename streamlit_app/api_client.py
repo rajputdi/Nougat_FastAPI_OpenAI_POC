@@ -27,7 +27,7 @@ def extract_text(url, library, nougat_api_address=None):
 
 
 def generate_summary(text):
-    api_url = "https://damg7245-asng2-team4-fd9f8dd6d40f.herokuapp.com/generate_summary"
+    api_url = "https://damg7245-asng2-team4-fd9f8dd6d40f.herokuapp.com/generate-summary"
     data = {"text": text}
     try:
         response = requests.post(api_url, json=data)
