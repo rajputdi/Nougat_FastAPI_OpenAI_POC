@@ -110,7 +110,12 @@ if st.button("Extract Text"):
             )  # Assuming extract_text returns both data and status code
             if status_code == 200:
                 st.write("Extracted Text:")
-                st.write(response_data.get("text", "No text extracted"))
+                # st.write(response_data.get("text", "No text extracted"))
+                st.text_area(
+                    "Text: ",
+                    value=response_data.get("text", "No text extracted"),
+                    height=400,
+                )
             elif status_code == 400:
                 st.error(
                     response_data.get("detail", "An unexpected error occurred.")
