@@ -3,27 +3,14 @@ import openai  # for generating embeddings
 import pandas as pd  # for DataFrames to store article sections and embeddings
 import re  # for cutting <ref> links out of Wikipedia articles
 import tiktoken  # for counting tokens
-
-
-text = None
-
-async def get_text(e_text, ques):
-    
-
-
-
-
-list_string = text.split("\n")
-strings_list = []
-temp = ""
-for i, string in enumerate(list_string):
-    if i % 9 != 0:
-        temp += string
-    else:
-        temp += string
-        strings_list.append("".join(temp))
+import ast  # for converting embeddings saved as strings back to arrays
+from scipy import spatial  # for calculating vector similarities for search
+import os
 
 GPT_MODEL = "gpt-3.5-turbo"  # only matters insofar as it selects which tokenizer to use
+openai_api_key = os.environ["OPENAI_API_KEY"]
+openai.api_key = openai_api_key
+EMBEDDING_MODEL = "text-embedding-ada-002"  # OpenAI's best embeddings as of Apr 2023
 
 
 def num_tokens(text: str, model: str = GPT_MODEL) -> int:
@@ -117,69 +104,6 @@ def split_strings_from_subsection(
     return [truncated_string(string, model=model, max_tokens=max_tokens)]
 
 
-MAX_TOKENS = 1600
-strings = []
-for section in strings_list:
-    strings.extend(split_strings_from_subsection(section, max_tokens=MAX_TOKENS))
-
-# print(f"{len(strings_list)} Wikipedia sections split into {len(strings)} strings.")
-
-tokens_count = []
-for string in strings:
-    tokens_count.append(num_tokens(string))
-
-# len(tokens_count)
-
-df = pd.DataFrame({"Content": strings, "Tokens": tokens_count})
-
-# calculate embeddings
-openai.api_key = ""
-EMBEDDING_MODEL = "text-embedding-ada-002"  # OpenAI's best embeddings as of Apr 2023
-BATCH_SIZE = 1000  # you can submit up to 2048 embedding inputs per request
-
-embeddings = []
-for batch_start in range(0, len(strings), BATCH_SIZE):
-    batch_end = batch_start + BATCH_SIZE
-    batch = strings[batch_start:batch_end]
-    print(f"Batch {batch_start} to {batch_end-1}")
-    response = openai.Embedding.create(model=EMBEDDING_MODEL, input=batch)
-    for i, be in enumerate(response["data"]):
-        assert i == be["index"]  # double check embeddings are in same order as input
-    batch_embeddings = [e["embedding"] for e in response["data"]]
-    embeddings.extend(batch_embeddings)
-
-df = pd.DataFrame({"text": strings, "embedding": embeddings})
-
-
-# imports
-import ast  # for converting embeddings saved as strings back to arrays
-from scipy import spatial  # for calculating vector similarities for search
-
-# models
-EMBEDDING_MODEL = "text-embedding-ada-002"
-
-
-def list_to_string(lst):
-    string_list = [str(l) for l in lst]
-    return ", ".join(string_list)  # You can customize the separator as needed
-
-
-# Apply the custom function to the specific column
-df["embedding"] = df["embedding"].apply(list_to_string)
-# list_to_string(df['embedding'][0])
-# string_list = []
-# for l in df['embedding'][0]:
-#   string_list.append(str(l))
-
-# print(", ".join(string_list))
-# print(df['embedding'][0])
-
-# df['embedding'] = list(df['embedding'])
-df["embedding"] = df["embedding"].apply(ast.literal_eval)
-df
-# df.dtypes
-
-
 def strings_ranked_by_relatedness(
     query: str,
     df: pd.DataFrame,
@@ -218,7 +142,7 @@ def query_message(query: str, df: pd.DataFrame, model: str, token_budget: int) -
 
 def ask(
     query: str,
-    df: pd.DataFrame = df,
+    df: pd.DataFrame,
     model: str = GPT_MODEL,
     token_budget: int = 4096 - 500,
     print_message: bool = False,
@@ -236,3 +160,62 @@ def ask(
     )
     response_message = response["choices"][0]["message"]["content"]
     return response_message
+
+
+async def get_text(text, question):
+    list_string = text.split("\n")
+    strings_list = []
+    temp = ""
+    for i, string in enumerate(list_string):
+        if i % 9 != 0:
+            temp += string
+        else:
+            temp += string
+            strings_list.append("".join(temp))
+
+    MAX_TOKENS = 1600
+    strings = []
+    for section in strings_list:
+        strings.extend(split_strings_from_subsection(section, max_tokens=MAX_TOKENS))
+
+    # print(f"{len(strings_list)} Wikipedia sections split into {len(strings)} strings.")
+
+    tokens_count = []
+    for string in strings:
+        tokens_count.append(num_tokens(string))
+
+    # len(tokens_count)
+
+    df = pd.DataFrame({"Content": strings, "Tokens": tokens_count})
+
+    # calculate embeddings
+    BATCH_SIZE = 1000  # you can submit up to 2048 embedding inputs per request
+
+    embeddings = []
+    for batch_start in range(0, len(strings), BATCH_SIZE):
+        batch_end = batch_start + BATCH_SIZE
+        batch = strings[batch_start:batch_end]
+        print(f"Batch {batch_start} to {batch_end-1}")
+        response = openai.Embedding.create(model=EMBEDDING_MODEL, input=batch)
+        for i, be in enumerate(response["data"]):
+            assert (
+                i == be["index"]
+            )  # double check embeddings are in same order as input
+        batch_embeddings = [e["embedding"] for e in response["data"]]
+        embeddings.extend(batch_embeddings)
+
+    df = pd.DataFrame({"text": strings, "embedding": embeddings})
+
+    def list_to_string(lst):
+        string_list = [str(l) for l in lst]
+        return ", ".join(string_list)  # You can customize the separator as needed
+
+    # Apply the custom function to the specific column
+    df["embedding"] = df["embedding"].apply(list_to_string)
+
+    # df['embedding'] = list(df['embedding'])
+    df["embedding"] = df["embedding"].apply(ast.literal_eval)
+
+    answer = ask(question, df=df)
+
+    return answer

@@ -5,7 +5,7 @@ from pdf_extractor import (
     extract_text_nougat,
 )  # Import the necessary functions
 from summary import get_summary
-from search import get_text
+from search_j import get_text
 import requests
 from fastapi.middleware.cors import CORSMiddleware
 from urllib.parse import urlparse
