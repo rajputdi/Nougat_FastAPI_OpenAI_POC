@@ -236,7 +236,7 @@ def get_text(extracted_text, question):
         )
         answer = response["choices"][0]["text"].strip()
         # return answer
-        return "Hello World!"
+        return extracted_text + " " + question
     except Exception as e:
         # Handle exceptions (e.g., OpenAI errors, network issues, etc.)
         print(f"Error: {e}")
