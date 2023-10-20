@@ -2,6 +2,7 @@ import streamlit as st
 from api_client import (
     extract_text,
     generate_summary,
+    ask_question,
 )  # Ensure this import is correct based on your file structure
 from metadata import get_metadata
 import requests
@@ -89,5 +90,18 @@ if st.button("Generate Summary"):
         st.error("No text available to generate summary. Please extract text first.")
 
 
-if st.button("ABC"):
-    get_text(st.session_state["extracted_text"])
+question = st.text_input("Enter your question:")
+if st.button("Ask Question"):
+    if st.session_state["extracted_text"] and question:
+        answer_data, answer_status_code = ask_question(
+            st.session_state["extracted_text"], question
+        )
+        if answer_status_code == 200:
+            st.write("Answer:")
+            st.write(answer_data.get("answer", "No answer provided"))
+        else:
+            st.error(f"An error occurred: {answer_status_code}")
+    else:
+        st.error(
+            "No text available or question provided. Please extract text and enter a question first."
+        )

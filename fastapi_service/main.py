@@ -5,6 +5,7 @@ from pdf_extractor import (
     extract_text_nougat,
 )  # Import the necessary functions
 from summary import get_summary
+from search import get_text
 import requests
 from fastapi.middleware.cors import CORSMiddleware
 from urllib.parse import urlparse
@@ -90,6 +91,15 @@ async def generate_summary(request: Request):
     return {"summary": summary}
 
 
-# @app.post("/ask/")
-# def generate_qa(query: str):
-#     return ask(query=query)
+@app.post("/ask-question/")
+async def ask_question(request: Request):
+    data = await request.json()
+    extracted_text = data.get("extracted_text")
+    question = data.get("question")
+
+    if not extracted_text or not question:
+        raise HTTPException(status_code=400, detail="Invalid input")
+
+    # Assume `get_answer` is a function that sends the question and text to OpenAI
+    answer = get_text(extracted_text, question)
+    return {"answer": answer}

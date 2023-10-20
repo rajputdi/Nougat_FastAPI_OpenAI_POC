@@ -25,3 +25,13 @@ def generate_summary(text):
     except RequestException as e:
         print(f"An error occurred: {e}")
         return None, response.status_code if response else None
+
+
+def ask_question(extracted_text, question):
+    api_url = "https://damg7245-asng2-team4-fd9f8dd6d40f.herokuapp.com/ask-question"
+    data = {"extracted_text": extracted_text, "question": question}
+    response = requests.post(api_url, json=data)
+    if response.status_code != 200:
+        return response.json(), response.status_code
+    response.raise_for_status()
+    return response.json(), response.status_code

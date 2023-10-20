@@ -7,9 +7,10 @@ import tiktoken  # for counting tokens
 
 text = None
 
+async def get_text(e_text, ques):
+    
 
-async def get_text(e_text):
-    text = e_text
+
 
 
 list_string = text.split("\n")
@@ -132,7 +133,7 @@ for string in strings:
 df = pd.DataFrame({"Content": strings, "Tokens": tokens_count})
 
 # calculate embeddings
-openai.api_key = "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"
+openai.api_key = ""
 EMBEDDING_MODEL = "text-embedding-ada-002"  # OpenAI's best embeddings as of Apr 2023
 BATCH_SIZE = 1000  # you can submit up to 2048 embedding inputs per request
 
