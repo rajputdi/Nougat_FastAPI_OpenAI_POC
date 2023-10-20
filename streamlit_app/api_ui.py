@@ -100,7 +100,7 @@ if st.button("Ask Question"):
             st.write("Answer:")
             st.write(answer_data.get("answer", "No answer provided"))
         else:
-            st.error(f"An error occurred: {answer_status_code}")
+            st.error(f"An error occurred (UI): {answer_status_code}")
     else:
         st.error(
             "No text available or question provided. Please extract text and enter a question first."

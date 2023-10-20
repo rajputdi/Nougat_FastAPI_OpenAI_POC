@@ -217,7 +217,7 @@ async def get_text(text, question):
 
     answer = ask(question, df=df)
 
-    return "Hello World" + answer
+    return "Hello World" + str(answer)
 
 
 # return text

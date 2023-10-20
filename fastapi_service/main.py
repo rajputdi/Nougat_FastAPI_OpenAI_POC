@@ -102,4 +102,4 @@ async def ask_question(request: Request):
 
     # Assume `get_answer` is a function that sends the question and text to OpenAI
     answer = get_text(extracted_text, question)
-    return {"answer": answer}
+    return {"answer": str(answer)}
