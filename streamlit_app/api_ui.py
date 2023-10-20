@@ -7,7 +7,6 @@ from api_client import (
 from metadata import get_metadata
 import requests
 from requests.exceptions import RequestException
-from fastapi_service.search import *
 
 st.title("Nougat v/s PyPdf, Q/A Model-OpenAI")
 
