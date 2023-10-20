@@ -218,28 +218,3 @@ async def get_text(text, question):
     answer = ask(question, df=df)
 
     return answer
-
-
-# return text
-
-
-# CHGDivyesh
-# def get_text(extracted_text, question):
-#     # Prepare the prompt for OpenAI
-#     openai_api_key = os.environ["OPENAI_API_KEY"]
-#     openai.api_key = openai_api_key
-
-#     prompt = f"Document: {extracted_text}\n\nQuestion: {question}\nAnswer:"
-
-#     # Call OpenAI API
-#     try:
-#         response = openai.Completion.create(
-#             engine="davinci", prompt=prompt, max_tokens=150
-#         )
-#         answer = response["choices"][0]["text"].strip()
-#         return answer
-#         # return extracted_text + " " + question
-#     except Exception as e:
-#         # Handle exceptions (e.g., OpenAI errors, network issues, etc.)
-#         print(f"Error: {e}")
-#         return None

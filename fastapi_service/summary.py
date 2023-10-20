@@ -17,4 +17,3 @@ async def get_summary(text):
     )
 
     return response.choices[0].text.strip()
-    # return "Hello World"
