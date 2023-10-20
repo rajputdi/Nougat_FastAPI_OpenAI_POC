@@ -90,7 +90,7 @@ if st.button("Generate Summary"):
 
 
 question = st.text_input("Enter your question:")
-st.write(st.session_state["extracted_text"])
+# st.write(st.session_state["extracted_text"])
 if st.button("Ask Question"):
     if st.session_state["extracted_text"] and question:
         answer_data, answer_status_code = ask_question(

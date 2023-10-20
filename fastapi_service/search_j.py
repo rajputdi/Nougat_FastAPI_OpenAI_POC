@@ -223,6 +223,9 @@ def ask(
 
 def get_text(extracted_text, question):
     # Prepare the prompt for OpenAI
+    openai_api_key = os.environ["OPENAI_API_KEY"]
+    openai.api_key = openai_api_key
+
     prompt = f"Document: {extracted_text}\n\nQuestion: {question}\nAnswer:"
 
     # Call OpenAI API
