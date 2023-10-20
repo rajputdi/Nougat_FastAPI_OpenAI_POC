@@ -5,9 +5,8 @@ from api_client import (
 )  # Ensure this import is correct based on your file structure
 from metadata import get_metadata
 import requests
-
 from requests.exceptions import RequestException
-
+from fastapi_service.search import *
 
 st.title("Nougat v/s PyPdf, Q/A Model-OpenAI")
 
@@ -88,3 +87,7 @@ if st.button("Generate Summary"):
             st.error(f"An error occurred: {summary_status_code}")
     else:
         st.error("No text available to generate summary. Please extract text first.")
+
+
+if st.button("ABC"):
+    get_text(st.session_state["extracted_text"])
