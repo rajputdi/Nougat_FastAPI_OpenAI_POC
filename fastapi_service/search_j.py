@@ -221,6 +221,7 @@ def ask(
 # return text
 
 
+# CHGDivyesh
 def get_text(extracted_text, question):
     # Prepare the prompt for OpenAI
     openai_api_key = os.environ["OPENAI_API_KEY"]
@@ -234,7 +235,8 @@ def get_text(extracted_text, question):
             engine="davinci", prompt=prompt, max_tokens=150
         )
         answer = response["choices"][0]["text"].strip()
-        return answer
+        # return answer
+        return "Hello World!"
     except Exception as e:
         # Handle exceptions (e.g., OpenAI errors, network issues, etc.)
         print(f"Error: {e}")
