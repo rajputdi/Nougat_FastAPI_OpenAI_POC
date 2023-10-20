@@ -161,7 +161,7 @@ def ask(
     return response_message
 
 
-async def get_text(text, question):
+def get_text(text, question):
     list_string = text.split("\n")
     strings_list = []
     temp = ""
@@ -217,7 +217,7 @@ async def get_text(text, question):
 
     answer = ask(question, df=df)
 
-    return "Hello World" + str(answer)
+    return answer
 
 
 # return text
