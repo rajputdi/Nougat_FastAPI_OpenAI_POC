@@ -228,10 +228,7 @@ def get_text(extracted_text, question):
     # Call OpenAI API
     try:
         response = openai.api.Completions.create(
-            engine="davinci",
-            prompt=prompt,
-            max_tokens=150,
-            api_key=openai_api_key,  # assuming you pass the OpenAI API key as an argument
+            engine="davinci", prompt=prompt, max_tokens=150
         )
         answer = response["choices"][0]["text"].strip()
         return answer
