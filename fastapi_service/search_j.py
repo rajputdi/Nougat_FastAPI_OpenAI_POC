@@ -161,61 +161,81 @@ def ask(
     return response_message
 
 
-async def get_text(text, question):
-    # list_string = text.split("\n")
-    # strings_list = []
-    # temp = ""
-    # for i, string in enumerate(list_string):
-    #     if i % 9 != 0:
-    #         temp += string
-    #     else:
-    #         temp += string
-    #         strings_list.append("".join(temp))
+# async def get_text(text, question):
+# list_string = text.split("\n")
+# strings_list = []
+# temp = ""
+# for i, string in enumerate(list_string):
+#     if i % 9 != 0:
+#         temp += string
+#     else:
+#         temp += string
+#         strings_list.append("".join(temp))
 
-    # MAX_TOKENS = 1600
-    # strings = []
-    # for section in strings_list:
-    #     strings.extend(split_strings_from_subsection(section, max_tokens=MAX_TOKENS))
+# MAX_TOKENS = 1600
+# strings = []
+# for section in strings_list:
+#     strings.extend(split_strings_from_subsection(section, max_tokens=MAX_TOKENS))
 
-    # # print(f"{len(strings_list)} Wikipedia sections split into {len(strings)} strings.")
+# # print(f"{len(strings_list)} Wikipedia sections split into {len(strings)} strings.")
 
-    # tokens_count = []
-    # for string in strings:
-    #     tokens_count.append(num_tokens(string))
+# tokens_count = []
+# for string in strings:
+#     tokens_count.append(num_tokens(string))
 
-    # # len(tokens_count)
+# # len(tokens_count)
 
-    # df = pd.DataFrame({"Content": strings, "Tokens": tokens_count})
+# df = pd.DataFrame({"Content": strings, "Tokens": tokens_count})
 
-    # # calculate embeddings
-    # BATCH_SIZE = 1000  # you can submit up to 2048 embedding inputs per request
+# # calculate embeddings
+# BATCH_SIZE = 1000  # you can submit up to 2048 embedding inputs per request
 
-    # embeddings = []
-    # for batch_start in range(0, len(strings), BATCH_SIZE):
-    #     batch_end = batch_start + BATCH_SIZE
-    #     batch = strings[batch_start:batch_end]
-    #     print(f"Batch {batch_start} to {batch_end-1}")
-    #     response = openai.Embedding.create(model=EMBEDDING_MODEL, input=batch)
-    #     for i, be in enumerate(response["data"]):
-    #         assert (
-    #             i == be["index"]
-    #         )  # double check embeddings are in same order as input
-    #     batch_embeddings = [e["embedding"] for e in response["data"]]
-    #     embeddings.extend(batch_embeddings)
+# embeddings = []
+# for batch_start in range(0, len(strings), BATCH_SIZE):
+#     batch_end = batch_start + BATCH_SIZE
+#     batch = strings[batch_start:batch_end]
+#     print(f"Batch {batch_start} to {batch_end-1}")
+#     response = openai.Embedding.create(model=EMBEDDING_MODEL, input=batch)
+#     for i, be in enumerate(response["data"]):
+#         assert (
+#             i == be["index"]
+#         )  # double check embeddings are in same order as input
+#     batch_embeddings = [e["embedding"] for e in response["data"]]
+#     embeddings.extend(batch_embeddings)
 
-    # df = pd.DataFrame({"text": strings, "embedding": embeddings})
+# df = pd.DataFrame({"text": strings, "embedding": embeddings})
 
-    # def list_to_string(lst):
-    #     string_list = [str(l) for l in lst]
-    #     return ", ".join(string_list)  # You can customize the separator as needed
+# def list_to_string(lst):
+#     string_list = [str(l) for l in lst]
+#     return ", ".join(string_list)  # You can customize the separator as needed
 
-    # # Apply the custom function to the specific column
-    # df["embedding"] = df["embedding"].apply(list_to_string)
+# # Apply the custom function to the specific column
+# df["embedding"] = df["embedding"].apply(list_to_string)
 
-    # # df['embedding'] = list(df['embedding'])
-    # df["embedding"] = df["embedding"].apply(ast.literal_eval)
+# # df['embedding'] = list(df['embedding'])
+# df["embedding"] = df["embedding"].apply(ast.literal_eval)
 
-    # answer = ask(question, df=df)
+# answer = ask(question, df=df)
 
-    # return answer
-    return text
+# return answer
+# return text
+
+
+def get_text(extracted_text, question):
+    # Prepare the prompt for OpenAI
+    prompt = f"Document: {extracted_text}\n\nQuestion: {question}\nAnswer:"
+
+    # Call OpenAI API
+    try:
+        response = openai.api.Completions.create(
+            engine="davinci",
+            prompt=prompt,
+            max_tokens=150,
+            api_key=openai_api_key,  # assuming you pass the OpenAI API key as an argument
+        )
+        answer = response["choices"][0]["text"].strip()
+        return answer
+    except Exception as e:
+        # Handle exceptions (e.g., OpenAI errors, network issues, etc.)
+        print(f"Error: {e}")
+        return None
