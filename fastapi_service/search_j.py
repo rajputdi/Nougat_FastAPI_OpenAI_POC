@@ -158,7 +158,7 @@ def ask(
         model=model, messages=messages, temperature=0
     )
     response_message = response["choices"][0]["message"]["content"]
-    return response_message
+    return str(response_message)
 
 
 async def get_text(text, question):
