@@ -101,5 +101,5 @@ async def ask_question(request: Request):
         raise HTTPException(status_code=400, detail="Invalid input")
 
     # Assume `get_answer` is a function that sends the question and text to OpenAI
-    answer = get_text(extracted_text, question)
-    return {"answer": str(answer)}
+    answer = await get_text(extracted_text, question)
+    return {"answer": answer}
